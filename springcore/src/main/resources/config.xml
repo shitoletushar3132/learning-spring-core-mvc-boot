@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    https://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/p
+    https://www.springframework.org/schema/p/spring-p.xsd
+    http://www.springframework.org/schema/util
+    https://www.springframework.org/schema/util/spring-util.xsd">
+
+
+
+<!--this is our beans-->
+    <!--   long syntax using setters-->
+    <bean class="com.tushar.Student" name="student1">
+        <property name="studentId">
+            <value>123423</value>
+        </property>
+
+        <property name="studentName">
+            <value>tushar</value>
+        </property>
+
+        <property name="studentAddress">
+            <value>Pune</value>
+        </property>
+
+        <property name="subjects">
+            <list>
+                <value>math</value>
+                <value>Science</value>
+                <value>History</value>
+            </list>
+        </property>
+
+    </bean>
+
+    <util:list id="subjectList">
+        <value>Math</value>
+        <value>Science</value>
+        <value>History</value>
+    </util:list>
+
+    <!-- using constructor     -->
+    <bean name="student2" class="com.tushar.Student">
+        <constructor-arg value="3132"/>
+        <constructor-arg value="vicky"/>
+        <constructor-arg value="varvand"/>
+        <constructor-arg ref="subjectList"/>
+    </bean>
+    <!--using short syntax setters-->
+    <bean name="student3" class="com.tushar.Student">
+        <property name="studentId" value="1234"/>
+        <property name="studentName" value="ram"/>
+        <property name="studentAddress" value="solapur"/>
+        <property name="subjects" ref="subjectList"/>
+    </bean>
+
+    <!--   using p schema -->
+    <bean class="com.tushar.Student" name="student 4" p:studentId="342" p:studentName="raju" p:studentAddress="karve"/>
+
+
+</beans>
