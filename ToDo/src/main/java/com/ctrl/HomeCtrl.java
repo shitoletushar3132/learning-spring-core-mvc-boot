@@ -50,5 +50,5 @@ public class HomeCtrl {
 		todos.add(t);
 		m.addAttribute("msg", "Successfully added..");
 		return "redirect:/home";
-	}
+	} 
 }
