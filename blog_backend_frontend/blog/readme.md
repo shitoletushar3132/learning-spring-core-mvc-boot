@@ -1,13 +1,3 @@
-Perfect, thanks for clarifying 👌
-So your **API design** looks like this:
-
-* **`/user/**`** → authentication-related endpoints (register, login)
-* **`/`** → blog-related endpoints (CRUD)
-
-Let me refine your **README.md** with this detail 👇
-
----
-
 # 📝 Blog Backend (Spring MVC + MySQL + JWT)
 
 This is the **backend REST API** for a Blog Application built using **Spring Core MVC**. It uses **Spring JDBC** with **MySQL** as the database and follows a clean layered architecture (**DAO + Service + Controller**).
