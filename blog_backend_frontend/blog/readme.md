@@ -48,8 +48,8 @@ src/main/java/com/blog
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/blog-backend.git
-cd blog-backend
+git clone https://github.com/shitoletushar3132/learning-spring-core-mvc-boot.git
+cd blog_backend_frontend/blog
 ```
 
 ### 2️⃣ Configure Database
