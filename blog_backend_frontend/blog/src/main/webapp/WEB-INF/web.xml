@@ -19,7 +19,7 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 		<multipart-config>
-			<location>D:/Spring/blog/uploads</location>              <!-- temp dir for uploads -->
+			<location>/app/uploads</location>              <!-- temp dir for uploads -->
 			<max-file-size>5242880</max-file-size> <!-- 5 MB per file -->
 			<max-request-size>20971520</max-request-size> <!-- 20 MB total -->
 			<file-size-threshold>0</file-size-threshold>

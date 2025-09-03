@@ -44,7 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public DataSource dataSource() {
 		DriverManagerDataSource ds = new DriverManagerDataSource();
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		ds.setUrl("jdbc:mysql://localhost:3306/blog");
+		ds.setUrl("jdbc:mysql://host.docker.internal:3306/blog");
 		ds.setUsername("root");
 		ds.setPassword("root");
 		return ds;
@@ -64,7 +64,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/uploads/**").addResourceLocations("file:D:/Spring/blog/uploads/");
+		registry.addResourceHandler("/uploads/**").addResourceLocations("file:/app/uploads/");
 	}
 
 	// ✅ View Resolver

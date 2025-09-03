@@ -28,7 +28,8 @@ public class PostService implements IPostService {
 	@Autowired
 	private IImageDAO imageDAO;
 
-	private static final String UPLOAD_DIR = "D:/Spring/blog/uploads/"; // Windows example
+//	private static final String UPLOAD_DIR = "D:/Spring/blog/uploads/"; // Windows example
+	private static final String UPLOAD_DIR = "/app/uploads/"; // Windows example
 
 
 	@Override
