@@ -1,13 +1,3 @@
-Perfect, thanks for clarifying 👌
-So your **API design** looks like this:
-
-* **`/user/**`** → authentication-related endpoints (register, login)
-* **`/`** → blog-related endpoints (CRUD)
-
-Let me refine your **README.md** with this detail 👇
-
----
-
 # 📝 Blog Backend (Spring MVC + MySQL + JWT)
 
 This is the **backend REST API** for a Blog Application built using **Spring Core MVC**. It uses **Spring JDBC** with **MySQL** as the database and follows a clean layered architecture (**DAO + Service + Controller**).
@@ -58,8 +48,8 @@ src/main/java/com/blog
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/blog-backend.git
-cd blog-backend
+git clone https://github.com/shitoletushar3132/learning-spring-core-mvc-boot.git
+cd blog_backend_frontend/blog
 ```
 
 ### 2️⃣ Configure Database
