@@ -3,7 +3,9 @@ package com.blog.security;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.blog.util.ApiResponse;
 import com.blog.util.JwtUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,9 +13,21 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
 
+	private void writeErrorResponse(HttpServletResponse response, String message, String error) throws Exception {
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setContentType("application/json");
+		ApiResponse<Object> apiResponse = new ApiResponse<>(null, message, error);
+		new ObjectMapper().writeValue(response.getWriter(), apiResponse);
+	}
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+
+		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+		    return true; // let Spring’s CORS config add headers
+		}
+
 
 		String token = null;
 
@@ -42,14 +56,13 @@ public class JwtInterceptor implements HandlerInterceptor {
 				return true; // allow request
 			} catch (Exception e) {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				response.getWriter().write("Invalid or expired token");
+				writeErrorResponse(response, "Unauthorized", "Invalid or expired token");
 				return false;
 			}
 		}
 
-		// 4️⃣ No token found
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		response.getWriter().write("Missing token");
+		writeErrorResponse(response, "Unauthorized", "Missing token");
 		return false;
 	}
 }

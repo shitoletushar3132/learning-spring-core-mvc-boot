@@ -6,7 +6,7 @@ import com.blog.model.BlogPost;
 
 public interface IPostDAO {
 
-	boolean savePost(BlogPost blogPost);
+	int savePostAndReturnId(BlogPost blogPost);
 
 	List<BlogPost> getAllPost();
 
@@ -17,4 +17,6 @@ public interface IPostDAO {
 	boolean deleteBlogPost(int postId, int userId);
 
 	List<BlogPost> getPostsByUserId(int userId);
+	
+	List<BlogPost> searchBlogs(String keyword);
 }

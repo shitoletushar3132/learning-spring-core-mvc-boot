@@ -1,7 +1,5 @@
 package com.blog.config;
 
-import java.util.Arrays;
-
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
@@ -12,8 +10,12 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 import com.blog.security.JwtInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,6 +56,17 @@ public class WebConfig implements WebMvcConfigurer {
 		return new JdbcTemplate(dataSource);
 	}
 
+	// multipart revolver
+	@Bean
+	public MultipartResolver multipartResolver() {
+		return new StandardServletMultipartResolver();
+	}
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/uploads/**").addResourceLocations("file:D:/Spring/blog/uploads/");
+	}
+
 	// ✅ View Resolver
 	@Bean
 	public ViewResolver viewResolver() {
@@ -68,5 +81,13 @@ public class WebConfig implements WebMvcConfigurer {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JavaTimeModule());
 		return mapper;
+	}
+
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**") // all endpoints
+				.allowedOrigins("http://localhost:5173")
+				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH").allowedHeaders("*")
+				.allowCredentials(true);
 	}
 }

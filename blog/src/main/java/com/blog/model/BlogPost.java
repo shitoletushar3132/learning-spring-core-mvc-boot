@@ -1,6 +1,7 @@
 package com.blog.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -13,18 +14,22 @@ public class BlogPost {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime publishedAt;
 	private UserModel author;
+	private List<Image> images;
 
 	public BlogPost() {
 		super();
 	}
 
-	public BlogPost(int id, String title, String content, LocalDateTime publishedAt, UserModel userModel) {
+	public BlogPost(int id, String title, String content, LocalDateTime publishedAt, UserModel userModel,
+			List<Image> images) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.publishedAt = publishedAt;
 		this.author = userModel;
+		this.images = images;
+
 	}
 
 	public int getId() {
@@ -65,6 +70,14 @@ public class BlogPost {
 
 	public void setAuthor(UserModel author) {
 		this.author = author;
+	}
+
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 
 	@Override

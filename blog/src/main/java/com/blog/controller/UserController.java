@@ -66,7 +66,7 @@ public class UserController {
 
 		return ResponseEntity.ok(new ApiResponse<>(new Object() {
 			public final UserModel user = loginUser;
-			public final String jwtToken = token;
+//			public final String jwtToken = token;
 		}, "User login successful", null));
 	}
 }

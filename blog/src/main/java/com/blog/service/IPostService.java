@@ -1,10 +1,13 @@
 package com.blog.service;
 
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.blog.model.BlogPost;
 
 public interface IPostService {
-	boolean createPost(BlogPost post, int userId);
+	boolean createPost(BlogPost post, int userId, MultipartFile[] files);
 
 	List<BlogPost> getAllPosts();
 
@@ -15,4 +18,6 @@ public interface IPostService {
 	boolean deletePost(int id, int userId);
 
 	List<BlogPost> getPostsByUserId(int userId);
+
+	List<BlogPost> getPostsByKeyWord(String keyWord);
 }

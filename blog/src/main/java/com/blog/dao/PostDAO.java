@@ -1,14 +1,18 @@
 package com.blog.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.blog.model.BlogPost;
@@ -39,25 +43,31 @@ public class PostDAO implements IPostDAO {
 		return post;
 	};
 
+
 	@Override
-	public boolean savePost(BlogPost blogPost) {
-		try {
-			String sql = "INSERT INTO posts(userId, title, content, publish_date) VALUES(?,?,?,?)";
-			int rows = jdbcTemplate.update(sql, blogPost.getAuthor().getId(), blogPost.getTitle(),
-					blogPost.getContent(), blogPost.getPublishedAt());
-			return rows > 0;
-		} catch (DuplicateKeyException e) {
-			throw new DataAccessException("Post already exists", e);
-		} catch (Exception e) {
-			throw new DataAccessException("Error saving post", e);
-		}
+	public int savePostAndReturnId(BlogPost blogPost) {
+	    String sql = "INSERT INTO posts(userId, title, content, publish_date) VALUES(?,?,?,?)";
+
+	    KeyHolder keyHolder = new GeneratedKeyHolder();
+
+	    jdbcTemplate.update(connection -> {
+	        PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	        ps.setInt(1, blogPost.getAuthor().getId());
+	        ps.setString(2, blogPost.getTitle());
+	        ps.setString(3, blogPost.getContent());
+	        ps.setTimestamp(4, Timestamp.valueOf(blogPost.getPublishedAt()));
+	        return ps;
+	    }, keyHolder);
+
+	    return keyHolder.getKey().intValue();
 	}
+
 
 	@Override
 	public List<BlogPost> getAllPost() {
 		try {
 			String sql = "SELECT p.id, p.title, p.content, p.publish_date, u.id as userId, u.email " + "FROM posts p "
-					+ "JOIN users u ON p.userId = u.id";
+					+ "JOIN users u ON p.userId = u.id ORDER BY publish_date DESC";
 			return jdbcTemplate.query(sql, blogPostRowMapper);
 		} catch (Exception e) {
 			throw new DataAccessException("Error fetching posts", e);
@@ -134,10 +144,22 @@ public class PostDAO implements IPostDAO {
 	@Override
 	public List<BlogPost> getPostsByUserId(int userId) {
 		try {
-			String sql = "SELECT * FROM posts p JOIN users u ON u.id = p.userId WHERE p.userId=?";
+			String sql = "SELECT * FROM posts p JOIN users u ON u.id = p.userId WHERE p.userId=? ORDER BY publish_date DESC";
 			return jdbcTemplate.query(sql, blogPostRowMapper, userId);
 		} catch (Exception e) {
 			throw new DataAccessException("Error fetching posts by user", e);
 		}
+	}
+
+	@Override
+	public List<BlogPost> searchBlogs(String keyword) {
+		try {
+			String sql = "SELECT * FROM posts p JOIN users u ON u.id = p.userId WHERE LOWER(title) LIKE ? OR LOWER(content) LIKE ? ORDER BY publish_date DESC";
+			String searchPattern = "%" + keyword.toLowerCase() + "%";
+			return jdbcTemplate.query(sql,blogPostRowMapper, searchPattern,searchPattern);
+		} catch (Exception e) {
+			throw new DataAccessException("Error fetching posts by keywords", e);
+		}
+
 	}
 }
